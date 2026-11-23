@@ -136,7 +136,7 @@ function toggleVote(k){const u=mem(me),s=ens(k);
 function mVote(){const u=mem(me);
  return (u.status!=='approved'?'<div class="card bg-yellow-50 text-yellow-900 text-sm">Tài khoản đang chờ Admin duyệt. Sau khi được duyệt bạn mới bấm vote được.</div>':'')+
  tuesdays().map(k=>{const s=sess(k),on=s.votes.includes(me),lock=!s.open||expired(s);
- return `<div class="card"><div class="flex justify-between items-start"><div><div class="font-bold text-slate-800">${dlab(k)}</div><div class="text-sm text-gray-500">17:30 – 19:30</div></div><span class="chip ${lock?'bg-gray-200 text-gray-600':'bg-indigo-100 text-indigo-800'}">${lock?'Đã khóa':'Đang mở'}</span></div>
+ return `<div class="card"><div class="flex justify-between items-start"><div><div class="font-bold text-slate-800">${dlab(k)}</div><div class="text-sm text-gray-500">20:00 – 22:00</div></div><span class="chip ${lock?'bg-gray-200 text-gray-600':'bg-indigo-100 text-indigo-800'}">${lock?'Đã khóa':'Đang mở'}</span></div>
  ${s.deadline&&s.open?`<div class="text-sm font-semibold text-orange-600 mt-1" data-dl="${s.deadline}"></div>`:''}
  <div class="text-sm mt-2 mb-1">Slot: <b>${used(s)}/${MAXS}</b></div>${voters(s)}
  <button class="btn w-full mt-2 ${on?'r':''}" ${lock&&!on||u.status!=='approved'||(lock&&on)?'disabled':''} onclick="toggleVote('${k}')">${on?'Hủy báo danh':used(s)>=MAXS?'Đã đầy':'Báo danh'}</button></div>`}).join('')}
@@ -205,7 +205,7 @@ function addVoteRow(k,s){const c=S.members.filter(m=>m.status==='approved'&&!s.v
  return c.length?`<div class="flex gap-2 mt-2"><select id="av_${k}" class="inp">${c.map(m=>`<option value="${m.id}">${dn(m)}</option>`).join('')}</select><button class="btn" onclick="addVote('${k}')">Vote hộ</button></div>`:''}
 function addVote(k){const s=ens(k),id=$('av_'+k).value;if(!id||s.votes.includes(id))return;if(used(s)>=MAXS)return toast('Đã đủ '+MAXS+' slot');s.votes.push(id);save()}
 function aSessions(){return tuesdays().map(k=>{const s=sess(k),c=calc(s);
- return `<div class="card"><div class="flex justify-between items-start"><div><div class="font-bold text-slate-800">${dlab(k)}</div><div class="text-sm text-gray-500">17:30 – 19:30 · Slot ${used(s)}/${MAXS}</div></div>
+ return `<div class="card"><div class="flex justify-between items-start"><div><div class="font-bold text-slate-800">${dlab(k)}</div><div class="text-sm text-gray-500">20:00 – 22:00 · Slot ${used(s)}/${MAXS}</div></div>
  <button class="btn ${s.open?'r':''}" onclick="setS('${k}','open',${!s.open})">${s.open?'Khóa vote':'Mở vote'}</button></div>
  <label class="text-xs text-gray-500 mt-2 block">Deadline vote</label><input type="datetime-local" class="inp" value="${s.deadline||''}" onchange="setS('${k}','deadline',this.value)">
  ${s.deadline&&s.open?`<div class="text-sm font-semibold text-orange-600 mt-1" data-dl="${s.deadline}"></div>`:''}
